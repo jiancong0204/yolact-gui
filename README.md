@@ -16,7 +16,7 @@ A GUI for YOLACT.
 - Setup the environment using anaconda
     ```shell
     # Create a new environment
-    conda create -n youlact python=3.6
+    conda create -n youlact python=3.7
     # Install pytorch
     conda install -c pytorch pytorch
     # Install torchvision
@@ -27,7 +27,20 @@ A GUI for YOLACT.
     pip install opencv-python pillow pycocotools matplotlib
     # Install PyQt5
     conda install -c anaconda pyqt
-    ```       
+    ```
+    |Name                    |Version    |
+    |:----------------------:|:---------:|
+    |cython                  |0.29.21    |
+    |matplotlib              |3.3.4      |
+    |opencv-python           |4.5.1.48   |
+    |pillow                  |8.1.0      |
+    |pycocotools             |2.0.2      |
+    |pyqt                    |5.9.2      |
+    |python                  |3.7.9      |  
+    |pytorch                 |1.7.1      |
+    |qt                      |5.9.7      |
+    |sip                     |4.19.8     |
+    |torchvision             |0.8.2      |      
 
 - Download COCO database
     - Images
