@@ -42,4 +42,10 @@ A GUI for YOLACT.
         2. [2014 Train/Val annotations](http://images.cocodataset.org/annotations/annotations_trainval2014.zip)
         3. [2017 Testing Image info](http://images.cocodataset.org/annotations/image_info_test2017.zip)
         
-        *Extract the images directly to ```./data/coco/annotations```*
+        *Extract the json files directly to ```./data/coco/annotations```*
+    
+## Run the App
+Just run *yolact_app.py*
+```shell
+python yolact_app.py
+```
