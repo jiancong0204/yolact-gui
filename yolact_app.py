@@ -1,6 +1,4 @@
 import sys
-import subprocess
-import time
 import gui
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtGui import QPixmap, QDoubleValidator, QIntValidator
