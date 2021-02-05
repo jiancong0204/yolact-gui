@@ -60,7 +60,17 @@ class MainDialog(QDialog):
         self.ui.lineEdit_scoreThreshold.editingFinished.connect(self.lineEditMoveSlider)
         self.ui.horizontalSlider_scoreThreshold.valueChanged.connect(self.sliderEditLineEdit)
 
+        # Clear
         self.ui.pushButton_reset.clicked.connect(self.clearWindow)
+        self.ui.pushButton_clearTerminal.clicked.connect(self.clearTerminal)
+        self.ui.pushButton_terminateThread.clicked.connect(self.terminateThread)
+        self.ui.pushButton_terminateThread.setEnabled(False)
+
+    def terminateThread(self):
+        self.b.terminate()
+        self.t.terminate()
+        self.e.terminate()
+        self.ui.pushButton_terminateThread.setEnabled(False)
 
     def updateTextBrowser(self, text):
         cursor = self.ui.textBrowser_terminal.textCursor()
@@ -83,6 +93,7 @@ class MainDialog(QDialog):
         batch_size = self.batchSize
         args = train_script.parse_args(['--config=' + config, '--batch_size=' + batch_size])
         self.t = TrainingThread(args)
+        self.ui.pushButton_terminateThread.setEnabled(True)
         self.t.start()
         loop = QEventLoop()
         QTimer.singleShot(2000, loop.quit)
@@ -92,6 +103,7 @@ class MainDialog(QDialog):
         # print(self.benchmarkModel)
         self.b = BenchmarkThread(self.benchmarkModel, self.benchmarkNumImage)
         self.clearWindow()
+        self.ui.pushButton_terminateThread.setEnabled(True)
         self.b.start()
         loop = QEventLoop()
         QTimer.singleShot(2000, loop.quit)
@@ -117,6 +129,7 @@ class MainDialog(QDialog):
 
         eval_script.parse_args(['--trained_model=' + model])
         self.e = EvaluationThread(eval_script.args)
+        self.ui.pushButton_terminateThread.setEnabled(True)
         self.e.start()
         loop = QEventLoop()
         QTimer.singleShot(2000, loop.quit)

@@ -35,9 +35,9 @@
    <property name="geometry">
     <rect>
      <x>680</x>
-     <y>80</y>
+     <y>70</y>
      <width>411</width>
-     <height>688</height>
+     <height>718</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_mainMenu">
@@ -618,6 +618,31 @@
       </property>
       <property name="text">
        <string>Clear Terminal</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_terminateThread">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>24</height>
+       </size>
+      </property>
+      <property name="sizeIncrement">
+       <size>
+        <width>0</width>
+        <height>24</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Stop</string>
+      </property>
+      <property name="default">
+       <bool>false</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
       </property>
      </widget>
     </item>
