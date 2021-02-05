@@ -18,8 +18,9 @@ A GUI for YOLACT.
   
 - Setup the environment using anaconda
     ```shell
-    # Create a new environment
+    # Create a new environment and activate it
     conda create -n youlact python=3.7
+    conda activate yolact
     # Install pytorch
     conda install -c pytorch pytorch
     # Install torchvision
