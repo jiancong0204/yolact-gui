@@ -11,6 +11,9 @@ A GUI for YOLACT.
     ```Shell
     git clone https://github.com/jiancong0204/yolact-gui
     cd yolact-gui
+    mkdir -p data/coco/images
+    mkdir -p data/coco/annotations
+    mkdir weights
     ```
   
 - Setup the environment using anaconda
