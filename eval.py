@@ -1050,66 +1050,6 @@ def print_maps(all_maps):
     print(make_sep(len(all_maps['box']) + 1))
     print()
 
-if __name__ == '__main__':
-
-    parse_args()
-
-    if args.config is not None:
-        set_cfg(args.config)
-
-    if args.trained_model == 'interrupt':
-        args.trained_model = SavePath.get_interrupt('weights/')
-    elif args.trained_model == 'latest':
-        args.trained_model = SavePath.get_latest('weights/', cfg.name)
-
-    if args.config is None:
-        model_path = SavePath.from_str(args.trained_model)
-        # TODO: Bad practice? Probably want to do a name lookup instead.
-        args.config = model_path.model_name + '_config'
-        print('Config not specified. Parsed %s from the file name.\n' % args.config)
-        set_cfg(args.config)
-
-    if args.detect:
-        cfg.eval_mask_branch = False
-
-    if args.dataset is not None:
-        set_dataset(args.dataset)
-
-    with torch.no_grad():
-        if not os.path.exists('results'):
-            os.makedirs('results')
-
-        if args.cuda:
-            cudnn.fastest = True
-            torch.set_default_tensor_type('torch.cuda.FloatTensor')
-        else:
-            torch.set_default_tensor_type('torch.FloatTensor')
-
-        if args.resume and not args.display:
-            with open(args.ap_data_file, 'rb') as f:
-                ap_data = pickle.load(f)
-            calc_map(ap_data)
-            exit()
-
-        if args.image is None and args.video is None and args.images is None:
-            dataset = COCODetection(cfg.dataset.valid_images, cfg.dataset.valid_info,
-                                    transform=BaseTransform(), has_gt=cfg.dataset.has_gt)
-            prep_coco_cats()
-        else:
-            dataset = None        
-
-        print('Loading model...', end='')
-        net = Yolact()
-        net.load_weights(args.trained_model)
-        net.eval()
-        print(' Done.')
-
-        if args.cuda:
-            net = net.cuda()
-
-        evaluate(net, dataset)
-
-
 def perform(args):
     iou_thresholds = [x / 100 for x in range(50, 100, 5)]
     coco_cats = {}  # Call prep_coco_cats to fill this
@@ -1171,3 +1111,6 @@ def perform(args):
 
         evaluate(net, dataset)
 
+if __name__ == '__main__':
+    parse_args()
+    perform(args)
