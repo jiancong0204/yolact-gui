@@ -739,7 +739,8 @@ def evalvideo(net:Yolact, path:str, out_path:str=None):
                         video_frame_times.add(next_time - last_time)
                         video_fps = 1 / video_frame_times.get_avg()
                     if out_path is None:
-                        cv2.imshow(path, frame_buffer.get())
+                        # cv2.imshow(path, frame_buffer.get())
+                        cv2.imwrite('results/tmp_res.jpg', frame_buffer.get())
                     else:
                         out.write(frame_buffer.get())
                     frames_displayed += 1
@@ -778,7 +779,7 @@ def evalvideo(net:Yolact, path:str, out_path:str=None):
                     new_target = frame_time_target
 
                 next_frame_target = max(2 * new_target - video_frame_times.get_avg(), 0)
-                target_time = frame_time_start + next_frame_target - 0.001 # Let's just subtract a millisecond to be safe
+                target_time = frame_time_start + next_frame_target - 0.001  # Let's just subtract a millisecond to be safe
                 
                 if out_path is None or args.emulate_playback:
                     # This gives more accurate timing than if sleeping the whole amount at once
@@ -1050,11 +1051,11 @@ def print_maps(all_maps):
     print(make_sep(len(all_maps['box']) + 1))
     print()
 
-def perform(args):
-    iou_thresholds = [x / 100 for x in range(50, 100, 5)]
-    coco_cats = {}  # Call prep_coco_cats to fill this
-    coco_cats_inv = {}
-    color_cache = defaultdict(lambda: {})
+def perform():
+    # iou_thresholds = [x / 100 for x in range(50, 100, 5)]
+    # coco_cats = {}  # Call prep_coco_cats to fill this
+    # coco_cats_inv = {}
+    # color_cache = defaultdict(lambda: {})
 
     if args.config is not None:
         set_cfg(args.config)
@@ -1111,6 +1112,34 @@ def perform(args):
 
         evaluate(net, dataset)
 
+def performVideoEval():
+    model_path = SavePath.from_str(args.trained_model)
+    # TODO: Bad practice? Probably want to do a name lookup instead.
+    args.config = model_path.model_name + '_config'
+    # print('Config not specified. Parsed %s from the file name.\n' % args.config)
+    set_cfg(args.config)
+
+    with torch.no_grad():
+        if not os.path.exists('results'):
+            os.makedirs('results')
+
+        if args.cuda:
+            cudnn.fastest = True
+            torch.set_default_tensor_type('torch.cuda.FloatTensor')
+        else:
+            torch.set_default_tensor_type('torch.FloatTensor')
+
+        print('Loading model...', end='')
+        net = Yolact()
+        net.load_weights(args.trained_model)
+        net.eval()
+        print(' Done.')
+
+        if args.cuda:
+            net = net.cuda()
+
+        evaluate(net, None)
+
 if __name__ == '__main__':
     parse_args()
-    perform(args)
+    perform()

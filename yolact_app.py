@@ -5,7 +5,7 @@ from PyQt5.QtGui import QPixmap, QDoubleValidator, QIntValidator
 from PyQt5.QtWidgets import QApplication, QDialog
 from PyQt5.QtCore import QThread, pyqtSignal, QEventLoop, QTimer
 import os
-
+import time
 import eval as eval_script
 import train as train_script
 
@@ -60,11 +60,23 @@ class MainDialog(QDialog):
         self.ui.lineEdit_scoreThreshold.editingFinished.connect(self.lineEditMoveSlider)
         self.ui.horizontalSlider_scoreThreshold.valueChanged.connect(self.sliderEditLineEdit)
 
+        # Online Test
+        ## Video test
+        self.d = DisplayThread()
+        self.d.signalForDisplay.connect(self.displayImage)
+        self.ui.pushButton_onlineTest.clicked.connect(self.triggerOnlineTest)
+
         # Clear
         self.ui.pushButton_reset.clicked.connect(self.clearWindow)
         self.ui.pushButton_clearTerminal.clicked.connect(self.clearTerminal)
         self.ui.pushButton_terminateThread.clicked.connect(self.terminateThread)
         self.ui.pushButton_terminateThread.setEnabled(False)
+
+    def displayImage(self):
+        curr_path = os.getcwd()
+        res_path = curr_path + '/results/tmp_res.jpg'
+        pixmap = QPixmap(res_path)
+        self.ui.display.setPixmap(pixmap)
 
     def terminateThread(self):
         self.b.terminate()
@@ -118,7 +130,7 @@ class MainDialog(QDialog):
         if not self.ui.radioButton_batchEvaluation.isChecked():
             eval_script.parse_args(['--trained_model=' + model, '--score_threshold=' + str(score_threshold),
                                     '--top_k=20', '--image=' + image + ':results/tmp_res.jpg'])
-            eval_script.perform(eval_script.args)
+            eval_script.perform()
             curr_path = os.getcwd()
             res_path = curr_path + '/results/tmp_res.jpg'
             pixmap = QPixmap(res_path)
@@ -128,7 +140,7 @@ class MainDialog(QDialog):
         self.clearWindow()
 
         eval_script.parse_args(['--trained_model=' + model])
-        self.e = EvaluationThread(eval_script.args)
+        self.e = EvaluationThread()
         self.ui.pushButton_terminateThread.setEnabled(True)
         self.e.start()
         loop = QEventLoop()
@@ -225,6 +237,26 @@ class MainDialog(QDialog):
         self.validationFile = image
         if self.validationModel != '' and self.validationFile != '':
             self.ui.pushButton_evaluate.setEnabled(True)
+
+    def triggerOnlineTest(self):
+        '''
+        python eval.py --trained_model=weights/yolact_base_54_800000.pth --score_threshold=0.25 --top_k=15 --video_multiframe=4 --video=video/demo.mp4
+        '''
+        model = 'weights/yolact_base_54_800000.pth'
+        score_threshold = 0.25
+        video_multiframe = 4
+        video = 'video/demo.mp4'  # :results/tmp_video.mp4
+
+        eval_script.parse_args(['--trained_model=' + model, '--score_threshold=' + str(score_threshold),
+                                '--top_k=15', '--video_multiframe=' + str(video_multiframe), '--video=' + video])
+        self.e = EvaluationThread()
+        self.e.start()
+        self.d.start()
+
+
+        loop = QEventLoop()
+        QTimer.singleShot(2000, loop.quit)
+
 
     def clearWindow(self):
         self.ui.display.clear()
@@ -334,16 +366,29 @@ class BenchmarkThread(QThread):
 class EvaluationThread(QThread):
     signalForText = pyqtSignal(str)
 
-    def __init__(self, args=None, data=None, parent=None):
+    def __init__(self, data=None, parent=None):
         super(EvaluationThread, self).__init__(parent)
         self.data = data
-        self.args = args
 
     def write(self, text):
         self.signalForText.emit(str(text))
 
     def run(self):
-        eval_script.perform(self.args)
+        if eval_script.args.video is None:
+            eval_script.perform()
+
+        eval_script.perform()
+
+class DisplayThread(QThread):
+    signalForDisplay = pyqtSignal(str)
+
+    def __int__(self):
+        super(DisplayThread, self).__init__()
+
+    def run(self):
+        while True:
+            self.signalForDisplay.emit('')
+            time.sleep(0.33)
 
 
 if __name__ == '__main__':
