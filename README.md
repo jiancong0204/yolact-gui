@@ -6,7 +6,7 @@ A GUI for YOLACT.
 
 **[Original repo](https://github.com/dbolya/yolact)**
 
-## Installation
+## Installation (See [Original repo](https://github.com/dbolya/yolact) for more details)
 - Clone this repo and enter it
     ```Shell
     git clone https://github.com/jiancong0204/yolact-gui
@@ -52,7 +52,7 @@ A GUI for YOLACT.
         1. [2017 Val images](http://images.cocodataset.org/zips/val2017.zip)
         1. [2017 Test images](http://images.cocodataset.org/zips/test2017.zip)
     
-        *Extract the images directly to ```./data/coco/images```*
+        *Extract the image files directly to ```./data/coco/images```*
     
     - Annotations
         1. [2017 Train/Val annotations](http://images.cocodataset.org/annotations/annotations_trainval2017.zip)
