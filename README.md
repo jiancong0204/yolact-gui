@@ -61,7 +61,7 @@ A GUI for YOLACT.
         
         *Extract the json files directly to ```./data/coco/annotations```*
 
-- Download trained model
+- Download trained model into ```./weights```
 
 | Image Size | Backbone      | FPS  | mAP  | Weights                                                                                                              |  |
 |:----------:|:-------------:|:----:|:----:|----------------------------------------------------------------------------------------------------------------------|--------|
