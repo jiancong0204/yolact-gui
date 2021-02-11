@@ -6,7 +6,7 @@ A GUI for YOLACT.
 
 **[Original repo](https://github.com/dbolya/yolact)**
 
-## Installation (See [Original repo](https://github.com/dbolya/yolact) for more details)
+## Installation (See the [original repo](https://github.com/dbolya/yolact) for more details)
 - Clone this repo and enter it
     ```Shell
     git clone https://github.com/jiancong0204/yolact-gui
