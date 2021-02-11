@@ -1,6 +1,6 @@
 import sys
 import gui
-from PyQt5 import QtWidgets, QtGui
+from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtGui import QPixmap, QDoubleValidator, QIntValidator
 from PyQt5.QtWidgets import QApplication, QDialog
 from PyQt5.QtCore import QThread, pyqtSignal, QEventLoop, QTimer
@@ -13,8 +13,12 @@ class MainDialog(QDialog):
 
     def __init__(self, parent=None):
         super(QDialog, self).__init__(parent)
+
         self.ui = gui.Ui_Dialog()
+
         self.ui.setupUi(self)
+        flag = QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowMinMaxButtonsHint | QtCore.Qt.WindowCloseButtonHint
+        self.setWindowFlags(flag)
         self.setWindowTitle('YOLACT - GUI')
         self.validationFile = str()
         self.validationModel = str()
