@@ -11,9 +11,9 @@ A GUI for YOLACT.
     ```Shell
     git clone https://github.com/jiancong0204/yolact-gui
     cd yolact-gui
-    mkdir -p data/coco/images
-    mkdir -p data/coco/annotations
-    mkdir weights
+    mkdir -p data/coco/images        # Stores image dataset
+    mkdir -p data/coco/annotations   # Stores data annotations
+    mkdir weights                    # Stores trained model
     ```
   
 - Setup the environment using anaconda
@@ -60,7 +60,17 @@ A GUI for YOLACT.
         3. [2017 Testing Image info](http://images.cocodataset.org/annotations/image_info_test2017.zip)
         
         *Extract the json files directly to ```./data/coco/annotations```*
-    
+
+- Download trained model
+
+| Image Size | Backbone      | FPS  | mAP  | Weights                                                                                                              |  |
+|:----------:|:-------------:|:----:|:----:|----------------------------------------------------------------------------------------------------------------------|--------|
+| 550        | Resnet50-FPN  | 42.5 | 28.2 | [yolact_resnet50_54_800000.pth](https://drive.google.com/file/d/1yp7ZbbDwvMiFJEq4ptVKTYTI2VeRDXl0/view?usp=sharing)  | [Mirror](https://ucdavis365-my.sharepoint.com/:u:/g/personal/yongjaelee_ucdavis_edu/EUVpxoSXaqNIlssoLKOEoCcB1m0RpzGq_Khp5n1VX3zcUw) |
+| 550        | Darknet53-FPN | 40.0 | 28.7 | [yolact_darknet53_54_800000.pth](https://drive.google.com/file/d/1dukLrTzZQEuhzitGkHaGjphlmRJOjVnP/view?usp=sharing) | [Mirror](https://ucdavis365-my.sharepoint.com/:u:/g/personal/yongjaelee_ucdavis_edu/ERrao26c8llJn25dIyZPhwMBxUp2GdZTKIMUQA3t0djHLw)
+| 550        | Resnet101-FPN | 33.5 | 29.8 | [yolact_base_54_800000.pth](https://drive.google.com/file/d/1UYy3dMapbH1BnmtZU4WH1zbYgOzzHHf_/view?usp=sharing)      | [Mirror](https://ucdavis365-my.sharepoint.com/:u:/g/personal/yongjaelee_ucdavis_edu/EYRWxBEoKU9DiblrWx2M89MBGFkVVB_drlRd_v5sdT3Hgg)
+| 700        | Resnet101-FPN | 23.6 | 31.2 | [yolact_im700_54_800000.pth](https://drive.google.com/file/d/1lE4Lz5p25teiXV-6HdTiOJSnS7u7GBzg/view?usp=sharing)     | [Mirror](https://ucdavis365-my.sharepoint.com/:u:/g/personal/yongjaelee_ucdavis_edu/Eagg5RSc5hFEhp7sPtvLNyoBjhlf2feog7t8OQzHKKphjw)
+
+
 ## Run the App
 Just run *yolact_app.py*
 ```shell
