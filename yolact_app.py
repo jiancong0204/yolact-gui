@@ -1,7 +1,7 @@
 import sys
 import gui
 from PyQt5 import QtWidgets, QtGui, QtCore
-from PyQt5.QtGui import QPixmap, QDoubleValidator, QIntValidator
+from PyQt5.QtGui import QPixmap, QImage, QDoubleValidator, QIntValidator
 from PyQt5.QtWidgets import QApplication, QDialog
 from PyQt5.QtCore import QThread, pyqtSignal, QEventLoop, QTimer
 import os
@@ -89,8 +89,9 @@ class MainDialog(QDialog):
         width = self.ui.display.width()
         height = self.ui.display.height()
         print(width, height)
-        pixmap = QPixmap(res_path)
-        pixmap.scaled(width, height, QtCore.Qt.IgnoreAspectRatio, QtCore.Qt.SmoothTransformation)
+        img = QImage(res_path)
+        # It dose not work when scaling pixmap. Dont know why
+        pixmap = QPixmap.fromImage(img.scaled(width, height, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation))
         self.ui.display.setPixmap(pixmap)
 
     def terminateThread(self):
