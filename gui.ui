@@ -107,8 +107,8 @@
          </property>
          <property name="maximumSize">
           <size>
-           <width>2000</width>
-           <height>500</height>
+           <width>20000</width>
+           <height>20000</height>
           </size>
          </property>
          <property name="text">
@@ -146,7 +146,7 @@
          <property name="maximumSize">
           <size>
            <width>2000</width>
-           <height>600</height>
+           <height>240</height>
           </size>
          </property>
         </widget>
@@ -154,14 +154,14 @@
       </layout>
      </item>
      <item>
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
       <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <widget class="Line" name="line_7">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
        <item>
         <widget class="QLabel" name="label">
          <property name="minimumSize">
@@ -323,13 +323,6 @@
          </property>
          <property name="autoDefault">
           <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="Line" name="line_2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </item>
@@ -520,13 +513,6 @@
         </widget>
        </item>
        <item>
-        <widget class="Line" name="line">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QLabel" name="label_3">
          <property name="minimumSize">
           <size>
@@ -668,13 +654,6 @@
          </property>
          <property name="autoDefault">
           <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="Line" name="line_3">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </item>
@@ -855,13 +834,6 @@
          </property>
          <property name="autoDefault">
           <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="Line" name="line_4">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </item>

@@ -19,6 +19,7 @@ class MainDialog(QDialog):
         self.ui.setupUi(self)
         flag = QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowMinMaxButtonsHint | QtCore.Qt.WindowCloseButtonHint
         self.setWindowFlags(flag)
+        self.setWindowState(QtCore.Qt.WindowMinimized)
         self.setWindowTitle('YOLACT - GUI')
         self.validationFile = str()
         self.validationModel = str()
@@ -85,13 +86,18 @@ class MainDialog(QDialog):
     def displayImage(self):
         curr_path = os.getcwd()
         res_path = curr_path + '/results/tmp_res.jpg'
+        width = self.ui.display.width()
+        height = self.ui.display.height()
+        print(width, height)
         pixmap = QPixmap(res_path)
+        pixmap.scaled(width, height, QtCore.Qt.IgnoreAspectRatio, QtCore.Qt.SmoothTransformation)
         self.ui.display.setPixmap(pixmap)
 
     def terminateThread(self):
         self.b.terminate()
         self.t.terminate()
         self.e.terminate()
+        self.d.terminate()
         self.clearWindow()
 
     def updateTextBrowser(self, text):
@@ -139,10 +145,7 @@ class MainDialog(QDialog):
             eval_script.parse_args(['--trained_model=' + model, '--score_threshold=' + str(score_threshold),
                                     '--top_k=20', '--image=' + image + ':results/tmp_res.jpg'])
             eval_script.perform()
-            curr_path = os.getcwd()
-            res_path = curr_path + '/results/tmp_res.jpg'
-            pixmap = QPixmap(res_path)
-            self.ui.display.setPixmap(pixmap)
+            self.displayImage()
             return
 
 
@@ -218,7 +221,7 @@ class MainDialog(QDialog):
     def chooseOnlineFile(self):
         video = QtWidgets.QFileDialog.getOpenFileName(self, "Select your video", "./video")[0]
         if video == '':
-            self.ui.pushButton_onlineVideo.setText('Select image')
+            self.ui.pushButton_onlineVideo.setText('Select video')
             self.ui.pushButton_onlineTest.setEnabled(False)
             return
         pos = video.find('yolact-gui')
@@ -330,48 +333,23 @@ class MainDialog(QDialog):
         QTimer.singleShot(2000, loop.quit)
 
     def resetWindow(self):
-        self.ui.display.clear()
         self.ui.textBrowser_terminal.clear()
-        self.validationFile = str()
-        self.validationModel = str()
-        self.benchmarkModel = str()
-        self.ui.pushButton_selectModel.setText('Select model')
-        self.ui.pushButton_selectImage.setText('Select image')
-        self.ui.pushButton_onlineVideo.setText('Select video')
-        self.ui.pushButton_evaluate.setEnabled(False)
-        self.ui.horizontalSlider_scoreThreshold.setValue(15)
-        self.ui.lineEdit_scoreThreshold.setText('0.15')
-        self.ui.lineEdit_onlineThreshold.setText('0.15')
-        self.ui.lineEdit_camIndex.setText('0')
-        self.ui.radioButton_batchEvaluation.setChecked(False)
-
-        self.ui.pushButton_selectModel_2.setText('Select model')
-        self.benchmarkNumImage = 1000
-        self.ui.pushButton_benchmark.setEnabled(False)
-        self.ui.lineEdit_numImage.setText('1000')
-        self.ui.horizontalSlider_numImage.setValue(1000)
-
-        self.trainConfig = 'yolact_base_config'
-        self.batchSize = '1'
-        self.ui.lineEdit_batchSize.setText('1')
-        self.ui.lineEdit_trainConfig.setText('yolact_base_config')
-
-        # delete tmp result
-        curr_path = os.getcwd()
-        delete_file = curr_path + '/results/tmp_res.jpg'
-        if os.path.exists(delete_file):
-            os.remove(delete_file)
+        self.clearWindow()
 
     def clearWindow(self):
         self.ui.display.clear()
-
         self.validationFile = str()
+        self.validationModel = str()
+        self.onlineFile = str()
+        self.onlineModel = str()
         self.validationModel = str()
         self.benchmarkModel = str()
         self.ui.pushButton_selectModel.setText('Select model')
         self.ui.pushButton_selectImage.setText('Select image')
         self.ui.pushButton_onlineVideo.setText('Select video')
+        self.ui.pushButton_onlineModel.setText('Select model')
         self.ui.pushButton_evaluate.setEnabled(False)
+        self.ui.pushButton_onlineTest.setEnabled(False)
         self.ui.horizontalSlider_scoreThreshold.setValue(15)
         self.ui.lineEdit_scoreThreshold.setText('0.15')
         self.ui.lineEdit_onlineThreshold.setText('0.15')
