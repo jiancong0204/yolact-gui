@@ -2,11 +2,11 @@
 
 ---
 
-A GUI for [YOLACT: Real-time Instance Segmentation](https://arxiv.org/abs/1904.02689).
+A GUI application for *[YOLACT: Real-time Instance Segmentation](https://arxiv.org/abs/1904.02689)*.
 
 Click **[here](https://github.com/dbolya/yolact)** for the original project
 
-## Installation (See the [original repo](https://github.com/dbolya/yolact) for more details)
+## Installation (Check the [original project](https://github.com/dbolya/yolact) for more details)
 - Clone this repo and enter it
     ```Shell
     git clone https://github.com/jiancong0204/yolact-gui
