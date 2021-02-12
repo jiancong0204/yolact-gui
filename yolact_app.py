@@ -88,7 +88,6 @@ class MainDialog(QDialog):
         res_path = curr_path + '/results/tmp_res.jpg'
         width = self.ui.display.width()
         height = self.ui.display.height()
-        print(width, height)
         img = QImage(res_path)
         # It dose not work when scaling pixmap. Dont know why
         pixmap = QPixmap.fromImage(img.scaled(width, height, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation))
