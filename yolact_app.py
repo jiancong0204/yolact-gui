@@ -128,6 +128,7 @@ class MainDialog(QDialog):
 
     def triggerBenchmark(self):
         # print(self.benchmarkModel)
+        self.ui.pushButton_benchmark.setEnabled(False)
         self.b = BenchmarkThread(self.benchmarkModel, self.benchmarkNumImage)
         self.b.start()
         loop = QEventLoop()
@@ -400,7 +401,7 @@ class MainDialog(QDialog):
 
         self.ui.lineEdit_numImage.setText(str(value))
         self.ui.horizontalSlider_numImage.setValue(value)
-        self.benchmarkNumImage = float(value)
+        self.benchmarkNumImage = int(value)
 
     def sliderEditLineEdit(self):
         value = self.ui.horizontalSlider_scoreThreshold.value() / 100
