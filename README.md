@@ -40,7 +40,7 @@ Click **[here](https://github.com/dbolya/yolact)** for the original project
     |pillow                  |8.1.0      |
     |pycocotools             |2.0.2      |
     |pyqt                    |5.9.2      |
-    |python                  |3.7.9      |  
+    |python                  |3.7.9      |
     |pytorch                 |1.7.1      |
     |qt                      |5.9.7      |
     |sip                     |4.19.8     |

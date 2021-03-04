@@ -263,9 +263,9 @@ def prep_display(dets_out, img, h, w, undo_transform=True, class_color=False, ma
 
                 cv2.rectangle(img_numpy, (x1, y1), (x1 + text_w, y1 - text_h - 4), color, -1)
                 cv2.putText(img_numpy, text_str, text_pt, font_face, font_scale, text_color, font_thickness, cv2.LINE_AA)
-            
-    
+
     return img_numpy
+
 
 def prep_benchmark(dets_out, h, w):
     with timer.env('Postprocess'):
@@ -285,6 +285,7 @@ def prep_benchmark(dets_out, h, w):
     with timer.env('Sync'):
         # Just in case
         torch.cuda.synchronize()
+
 
 def prep_coco_cats():
     """ Prepare inverted table for category id lookup given a coco cats object. """
@@ -377,17 +378,17 @@ class Detections:
             json.dump(output, f)
         
 
-        
-
 def _mask_iou(mask1, mask2, iscrowd=False):
     with timer.env('Mask IoU'):
         ret = mask_iou(mask1, mask2, iscrowd)
     return ret.cpu()
 
+
 def _bbox_iou(bbox1, bbox2, iscrowd=False):
     with timer.env('BBox IoU'):
         ret = jaccard(bbox1, bbox2, iscrowd)
     return ret.cpu()
+
 
 def prep_metrics(ap_data, dets, img, gt, gt_masks, h, w, num_crowd, image_id, detections:Detections=None):
     """ Returns a list of APs for this image, with each element being for a class  """
@@ -586,6 +587,7 @@ class APDataObject:
         # avg([precision(x) for x in 0:0.01:1])
         return sum(y_range) / len(y_range)
 
+
 def badhash(x):
     """
     Just a quick and dirty hash function for doing a deterministic shuffle based on image_id.
@@ -597,6 +599,7 @@ def badhash(x):
     x = (((x >> 16) ^ x) * 0x045d9f3b) & 0xFFFFFFFF
     x =  ((x >> 16) ^ x) & 0xFFFFFFFF
     return x
+
 
 def evalimage(net:Yolact, path:str, save_path:str=None):
     frame = torch.from_numpy(cv2.imread(path)).cuda().float()
@@ -614,6 +617,7 @@ def evalimage(net:Yolact, path:str, save_path:str=None):
         plt.show()
     else:
         cv2.imwrite(save_path, img_numpy)
+
 
 def evalimages(net:Yolact, input_folder:str, output_folder:str):
     if not os.path.exists(output_folder):
@@ -637,6 +641,7 @@ class CustomDataParallel(torch.nn.DataParallel):
     def gather(self, outputs, output_device):
         # Note that I don't actually want to convert everything to the output_device
         return sum(outputs, [])
+
 
 def evalvideo(net:Yolact, path:str, out_path:str=None):
     # If the path is a digit, parse it as a webcam index
@@ -1051,6 +1056,7 @@ def print_maps(all_maps):
     print(make_sep(len(all_maps['box']) + 1))
     print()
 
+
 def perform():
     # iou_thresholds = [x / 100 for x in range(50, 100, 5)]
     # coco_cats = {}  # Call prep_coco_cats to fill this
@@ -1139,6 +1145,7 @@ def performVideoEval():
             net = net.cuda()
 
         evaluate(net, None)
+
 
 if __name__ == '__main__':
     parse_args()

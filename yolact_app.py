@@ -119,8 +119,7 @@ class MainDialog(QDialog):
         # python train.py --config=yolact_base_config --batch_size=1
         config = self.trainConfig
         batch_size = self.batchSize
-        args = train_script.parse_args(['--config=' + config, '--batch_size=' + batch_size])
-        self.t = TrainingThread(args)
+        self.t = TrainingThread(config, batch_size)
         self.t.start()
         loop = QEventLoop()
         QTimer.singleShot(2000, loop.quit)
@@ -134,12 +133,10 @@ class MainDialog(QDialog):
         loop = QEventLoop()
         QTimer.singleShot(2000, loop.quit)
 
-
     def triggerEvaluation(self):
         image = self.validationFile
         model = self.validationModel
         score_threshold = self.validationScoreThreshold
-
 
         # Setup Evaluation
         if not self.ui.radioButton_batchEvaluation.isChecked():
@@ -149,7 +146,6 @@ class MainDialog(QDialog):
             self.displayImage()
             return
 
-
         eval_script.parse_args(['--trained_model=' + model])
         self.e = EvaluationThread()
         self.e.start()
@@ -158,7 +154,7 @@ class MainDialog(QDialog):
         QTimer.singleShot(2000, loop.quit)
 
     def chooseTrainedModel(self, FilePath):
-        model = QtWidgets.QFileDialog.getOpenFileName(self,  "Select your model", "./weights")[0]
+        model = QtWidgets.QFileDialog.getOpenFileName(self, "Select your model", "./weights")[0]
         if model == '':
             self.ui.pushButton_onlineModel.setText('Select model')
             self.ui.pushButton_onlineTest.setEnabled(False)
@@ -426,22 +422,21 @@ class MainDialog(QDialog):
         self.ui.lineEdit_onlineThreshold.setText(str(value))
 
 
-
-
 class TrainingThread(QThread):
     signalForText = pyqtSignal(str)
 
-    def __init__(self, args=None, data=None, parent=None):
+    def __init__(self, config=None, batch_size=None, data=None, parent=None):
         super(TrainingThread, self).__init__(parent)
         self.data = data
-        self.args = args
+        self.config = config
+        self.batch_size = batch_size
 
     def write(self, text):
         self.signalForText.emit(str(text))
 
     def run(self):
-        print(str(self.args))
-        train_script.perform(self.args)
+        train_script.parse_args(['--config=' + self.config, '--batch_size=' + self.batch_size])
+        train_script.perform()
 
 
 class BenchmarkThread(QThread):
